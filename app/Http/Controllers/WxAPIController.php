@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use RequestAPI;
 use WxTimeSend;
+use WxConfigModel;
 
 class WxAPIController extends Controller
 {
@@ -20,11 +21,11 @@ class WxAPIController extends Controller
             exit;
         }
 
-        $wx_info = config('wxInfo.wx_app_info');
-        $url_config = config('wxInfo.wx_request_url');
-        $token_url = $url_config['access_token'];
+        $WxConfigModel =  WxConfigModel::get_instance();
 
-        $res = json_decode(RequestAPI::_request($token_url, ['appid'=>$wx_info['appId'], 'secret'=>$wx_info['appSecret'],'grant_type'=>'client_credential'],'wx_access_token'),true);
+        // 先获得 access token
+        $res = json_decode(RequestAPI::_request($WxConfigModel->get_wx_send_tmp_token_url(),
+            ['appid'=>$WxConfigModel->get_wx_appId(), 'secret'=>$WxConfigModel->get_wx_appSecret(),'grant_type'=>'client_credential'],'wx_access_token'),true);
         $access_token = $res['access_token'];
         $template_url = $WxTimeSend->get_request_url()."?access_token={$access_token}";
 
@@ -35,6 +36,8 @@ class WxAPIController extends Controller
 
     public function test()
     {
-        echo "Test Page";
+        echo "Test Page",PHP_EOL;
+        $WxConfigModel =  WxConfigModel::get_instance();
+        echo $WxConfigModel->get_wx_appSecret();
     }
 }
