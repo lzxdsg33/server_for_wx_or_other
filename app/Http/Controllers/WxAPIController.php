@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use RequestAPI;
 use WxTimeSend;
 use WxConfigModel;
@@ -16,7 +14,7 @@ class WxAPIController extends Controller
         $WxTimeSend = new WxTimeSend;
         $WxTimeSend->args_check();
 
-        if ($WxTimeSend->is_err) {
+        if ( $WxTimeSend->is_error() ) {
             echo $WxTimeSend->format_error_msg();
             exit;
         }
@@ -37,7 +35,11 @@ class WxAPIController extends Controller
     public function test()
     {
         echo "Test Page",PHP_EOL;
-        $WxConfigModel =  WxConfigModel::get_instance();
-        echo $WxConfigModel->get_wx_appSecret();
+//        $output = shell_exec('python.exe D:\pytest\image_add_font.py');
+//        system('C:\Users\Administrator.PC-20171011CEDK\AppData\Local\Programs\Python\Python37\python.exe D:\pytest\image_add_font.py -dp 1 -ip D:\pytest\image\huangtu_15.jpg -op D:\pytest\image -c 狂干一条街 ');
+//        exec('python D:\pytest\a.py',$array,$ret);
+//        var_dump($array);
+//        echo("ret is $ret");
+        echo RequestAPI::_request('http://www.whistlalk.com/wx_upload',array(),'','POST');
     }
 }

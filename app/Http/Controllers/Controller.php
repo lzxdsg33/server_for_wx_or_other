@@ -1,4 +1,5 @@
 <?php
+//php artisan make:controller Photo/PhotoController
 
 namespace App\Http\Controllers;
 

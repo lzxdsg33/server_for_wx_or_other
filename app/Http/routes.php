@@ -18,4 +18,4 @@ Route::get('/getWxToken', 'WxAPIController@get_access_token');
 
 Route::get('/testPage', 'WxAPIController@test');
 
-Route::post('/upload', 'WxUploadController@upload');
+Route::post('/wx_upload', 'WxUploadController@upload');
