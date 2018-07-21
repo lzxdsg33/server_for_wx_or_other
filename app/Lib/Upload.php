@@ -102,7 +102,7 @@ class Upload
 
     private function set_output()
     {
-        $path = '/tmp/data/uploads/images/'.$this->_user_name;
+        $path = storage_path().'/uploads/'.$this->_user_name;
         $file_name = $path.'/'.date("YmdHis",time())."_".$this->_file_name;
 
         if(!is_dir($path)) {
