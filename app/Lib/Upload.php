@@ -27,8 +27,8 @@ class Upload
     {
         $this->init_error_msg();
 
-        $this->_file = request()->file('file');
-        $this->_user_name = request()->input('user');
+        $this->_file = $request->file('file');
+        $this->_user_name = $request->input('user');
 
         // 看文件是否有问题
         $this->verify();
