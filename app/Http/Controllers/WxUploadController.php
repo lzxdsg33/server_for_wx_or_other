@@ -11,8 +11,7 @@ class WxUploadController extends Controller
 {
   public function upload()
   {
-      echo storage_path();
-//      $Upload = new Upload(new Request);
-//      echo $Upload->format_res_info();
+      $Upload = new Upload(new Request);
+      echo $Upload->format_res_info();
   }
 }
