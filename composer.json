@@ -20,7 +20,8 @@
         "classmap": [
             "database",
             "app/Lib/RequestAPI.php",
-            "app/Lib/WxFunModel/WxTimeSend.php"
+            "app/Lib/WxFunModel/WxTimeSend.php",
+            "app/Lib/Upload.php"
         ],
         "psr-4": {
             "App\\": "app/"
