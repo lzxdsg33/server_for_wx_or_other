@@ -8,7 +8,7 @@
  * 定时发送类
  */
 
-use Illuminate\Support\Facades\Config;
+use WxConfigModel;
 
 class WxTimeSend
 {
@@ -23,8 +23,9 @@ class WxTimeSend
 
     public function __construct()
     {
-        $this->_request_url = config('wxInfo.wx_request_url')['template'];
-        $this->_tmp_id = config('wxInfo.wx_template_id')['user_crontab_tmp_id'];
+        $WxConfigModel =  WxConfigModel::get_instance();
+        $this->_request_url = $WxConfigModel->get_wx_send_tmp_url();
+        $this->_tmp_id      = $WxConfigModel->get_wx_send_tmp_id();
         $this->_param = [
             'touser' => '',
             'template_id' => '',

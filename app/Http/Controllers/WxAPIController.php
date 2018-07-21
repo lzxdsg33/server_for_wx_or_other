@@ -40,6 +40,7 @@ class WxAPIController extends Controller
 //        exec('python D:\pytest\a.py',$array,$ret);
 //        var_dump($array);
 //        echo("ret is $ret");
-        echo RequestAPI::_request('http://www.whistlalk.com/wx_upload',array(),'','POST');
+//        echo RequestAPI::_request('http://www.whistlalk.com/wx_upload',array(),'','POST');
+        echo public_path();
     }
 }

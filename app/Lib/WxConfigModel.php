@@ -17,6 +17,7 @@ class WxConfigModel
 
     const WX_APP_ID_INFO = 'wx_app_info';
     const WX_REQUEST_URL = 'wx_request_url';
+    const WX_TMP_ID      = 'wx_template_id';
 
     public static function get_instance()
     {
@@ -60,5 +61,11 @@ class WxConfigModel
     public function get_wx_send_tmp_url()
     {
         return $this->_config[self::WX_REQUEST_URL]['template'];
+    }
+
+    // 获取模板 ID
+    public function get_wx_send_tmp_id()
+    {
+        return $this->_config[self::WX_TMP_ID]['user_crontab_tmp_id'];
     }
 }
