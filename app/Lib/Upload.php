@@ -7,6 +7,7 @@
  * 处理上传文件的模块
  */
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Upload
 {
@@ -14,6 +15,8 @@ class Upload
     private $_is_err = false;
     private $_error_msg;
     private $_user_name;
+    private $_file_name;
+    private $_ext;
 
     private $_file_type_array = array(
         'jpg', 'jpeg', 'png', 'gif', 'txt', // 暂时这几个个
@@ -22,27 +25,41 @@ class Upload
     const UNVERIFY_FILE_ERROR     = 'unverify file have upload';
     const FILE_TYPE_ERROR         = 'illegal file type as : ';
     const UPLOAD_FILE_ERROR       = 'upload file faile !';
+    const USER_ERROR              = 'no user name';
+
+    const UPLOAD_COMPLETE         = 'Upload Success !';
 
     public function __construct(Request $request)
     {
         $this->init_error_msg();
 
-        $this->_file = $request->file('file');
-        $this->_user_name = $request->input('user');
+        if($this->verify()) {
 
-        // 看文件是否有问题
-        $this->verify();
-        if ( !$this->is_error() ) {
-            $ext = $this->_file->getClientOriginalExtension(); //文件扩展名
-            if( !in_array($ext, $this->_file_type_array) ) {
-                $this->record_error(self::FILE_TYPE_ERROR.$ext);
+            if (!isset($_POST['userName'])) {
+                $this->record_error(self::USER_ERROR.__LINE__);
+                return;
+            } else {
+                $this->_user_name = $_POST['userName'];
+            }
+
+            if( !in_array($this->_ext, $this->_file_type_array) ) {
+                $this->record_error(self::FILE_TYPE_ERROR.$this->_ext.__LINE__);
                 return;
             }
-            if ( !$this->set_output($ext) ) {
-                $this->record_error(self::UPLOAD_FILE_ERROR);
+            if ( !$this->is_error() ) {
+                if ( !$this->set_output() ) {
+                    $this->record_error(self::UPLOAD_FILE_ERROR.__LINE__);
+                    return;
+                }
+            } else {
+                $this->record_error($this->_error_msg['err_msg'].__LINE__);
                 return;
             }
+
+        } else {
+            $this->record_error(self::UNVERIFY_FILE_ERROR.__LINE__);
         }
+
     }
 
     private function is_error()
@@ -50,35 +67,49 @@ class Upload
         return $this->_is_err;
     }
 
-    private function verify()
-    {
-        if( !$this->_file->isValid() ) {
-            $this->_is_err = true;
-        }
-    }
-
     private function init_error_msg()
     {
-        $this->_is_err = true;
+        $this->_is_err = false;
         $this->_error_msg = array(
             'error'  => 0,
-            'err_msg' => '',
+            'err_msg' => self::UPLOAD_COMPLETE,
         );
+    }
+
+    private function verify()
+    {
+        if(!empty($_FILES['pic'])) {
+            if ($_FILES['pic']['tmp_name'] == 'error' ) {
+                $this->record_error(self::FILE_TYPE_ERROR);
+                return false;
+            }
+            $this->_file      = $_FILES['pic']['tmp_name'];
+            $this->_file_name = $_FILES['pic']['name'];
+
+            $tmp       = explode('.',$_FILES['pic']['name']);
+            $this->_ext= $tmp[count($tmp)-1];
+            return true;
+        }
+        return false;
     }
 
     private function record_error($msg)
     {
+        $this->_is_err = true;
         $this->_error_msg['error'] = 1;
-        $this->_error_msg['err_msg'][] = $msg;
+        $this->_error_msg['err_msg'] = $msg;
     }
 
-    private function set_output($ext)
+    private function set_output()
     {
         $path = '/tmp/data/uploads/images/'.$this->_user_name;
-        $file_name = date("YmdHis",time()).'-'.uniqid().".".$ext;
+        $file_name = $path.'/'.date("YmdHis",time())."_".$this->_file_name;
 
-        File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
-        return $this->_file->move($path,$file_name);
+        if(!is_dir($path)) {
+            mkdir($path,0777);
+        }
+
+        return move_uploaded_file($this->_file, $file_name);
     }
 
     public function format_res_info()
