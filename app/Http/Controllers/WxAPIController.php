@@ -35,7 +35,7 @@ class WxAPIController extends Controller
 
     public function test()
     {
-//        echo "Test Page",PHP_EOL;
+        echo "Test Page",PHP_EOL;
 //        $output = shell_exec('python.exe D:\pytest\image_add_font.py');
 //        system('C:\Users\Administrator.PC-20171011CEDK\AppData\Local\Programs\Python\Python37\python.exe D:\pytest\image_add_font.py -dp 1 -ip D:\pytest\image\huangtu_15.jpg -op D:\pytest\image -c 狂干一条街 ');
 //        exec('python D:\pytest\a.py',$array,$ret);
@@ -46,12 +46,8 @@ class WxAPIController extends Controller
         // 输出图片前不能有输出,ob_clean()清空就可以显示图片了！！！！
 //        ob_clean();
 //        header('Content-type: image/jpg');
-        $os_name=PHP_OS;
-        if(strpos($os_name,"Linux")!==false){
-            $os_str="Linux操作系统";
-        }else if(strpos($os_name,"WIN")!==false){
-            $os_str="Windows操作系统";
-        }
-        echo $os_name;
+//        $t = file_get_contents(storage_path().'\huangtu_22.jpg');
+//        echo $t;
+//        echo $t;
     }
 }

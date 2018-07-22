@@ -11,6 +11,8 @@ class ImageAddFont
 {
     // 文字内容
     public $content;
+    // 保存后的图片的局对路径
+    public $op;
 
     // 图片的实例
     private $_img;
@@ -123,6 +125,21 @@ class ImageAddFont
         imagedestroy($this->_img);
     }
 
+    public function save($path)
+    {
+        imagefttext($this->_img, $this->_font_size, $this->_roll, $this->_x, $this->_y, $this->_color, $this->_font, $this->content);
+
+        ob_start();
+        imagejpeg($this->_img);
+        $img = ob_get_contents();
+        ob_end_clean();
+//        $size = strlen($img);
+        $this->op = $path.'/add_'.date("YmdHis",time()).'.jpg';
+        $fp2=@fopen($this->op, "a");
+        fwrite($fp2,$img);
+        fclose($fp2);
+    }
+
     private function init()
     {
         $this->set_font();
@@ -130,5 +147,10 @@ class ImageAddFont
         $this->set_font_size();
         $this->set_position();
         $this->set_roll();
+    }
+
+    public function formate_res_info()
+    {
+        return json_encode(array('error'=>0, 'op'=>$this->op));
     }
 }

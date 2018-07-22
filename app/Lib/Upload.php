@@ -112,7 +112,10 @@ class Upload
             mkdir($path,0777);
         }
 
+        // 文件绝对路径
         $this->_error_msg['file_name'] = $file_name;
+        // 文件目录
+        $this->_error_msg['file_path'] = $path;
         return move_uploaded_file($this->_file, $file_name);
     }
 

@@ -19,8 +19,15 @@ class WxUploadController extends Controller
 
       $msg = $Upload->get_res_info();
       $ImageAddFont = new ImageAddFont($msg['file_name'], $_POST['content']);
-      $ImageAddFont->output();
+      $ImageAddFont->save($msg['file_path']);
+      echo $ImageAddFont->formate_res_info();
+//      $ImageAddFont->output();
   }
 
+    public function download(Request $request)
+    {
+        header('Content-type: image/jpg');
+        echo file_get_contents($request->input('op'));
+    }
 
 }
