@@ -6,6 +6,7 @@ use RequestAPI;
 use WxTimeSend;
 use WxConfigModel;
 
+use Illuminate\Support\Facades\URL;
 class WxAPIController extends Controller
 {
     public function get_access_token()
@@ -34,13 +35,41 @@ class WxAPIController extends Controller
 
     public function test()
     {
-        echo "Test Page",PHP_EOL;
+//        echo "Test Page",PHP_EOL;
 //        $output = shell_exec('python.exe D:\pytest\image_add_font.py');
 //        system('C:\Users\Administrator.PC-20171011CEDK\AppData\Local\Programs\Python\Python37\python.exe D:\pytest\image_add_font.py -dp 1 -ip D:\pytest\image\huangtu_15.jpg -op D:\pytest\image -c 狂干一条街 ');
 //        exec('python D:\pytest\a.py',$array,$ret);
 //        var_dump($array);
 //        echo("ret is $ret");
 //        echo RequestAPI::_request('http://www.whistlalk.com/wx_upload',array(),'','POST');
-        echo public_path();
+//        echo public_path();
+        // 输出图片前不能有输出,ob_clean()清空就可以显示图片了！！！！
+//        ob_clean();
+//        header('Content-type: image/jpg');
+        $dst_path = storage_path().'\huangtu_22.jpg';
+        $src_path = storage_path().'\lanaya.jpg_20180721162814.jpg';
+//创建图片的实例
+        $dst = imagecreatefromstring(file_get_contents($dst_path));
+        $black = imagecolorallocate($dst, 0,0, 0);
+        imagefttext($dst, 18, 0, 234, 475, $black, 'C:\Windows\Fonts\msyh.ttf', 'test');
+        list($dst_w, $dst_h, $dst_type) = getimagesize($dst_path);
+        echo $dst_w;
+//        switch ($dst_type) {
+//            case 1://GIF
+//                header('Content-Type: image/gif');
+//                imagegif($dst);
+//                break;
+//            case 2://JPG
+//                header('Content-Type: image/jpeg');
+//                imagejpeg($dst);
+//                break;
+//            case 3://PNG
+//                header('Content-Type: image/png');
+//                imagepng($dst);
+//                break;
+//            default:
+//                break;
+//        }
+        imagedestroy($dst);
     }
 }

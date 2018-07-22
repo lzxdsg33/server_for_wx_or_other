@@ -29,7 +29,7 @@ class Upload
 
     const UPLOAD_COMPLETE         = 'Upload Success !';
 
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->init_error_msg();
 
@@ -62,7 +62,7 @@ class Upload
 
     }
 
-    private function is_error()
+    public function is_error()
     {
         return $this->_is_err;
     }
@@ -102,14 +102,23 @@ class Upload
 
     private function set_output()
     {
-        $path = storage_path().'/uploads/'.$this->_user_name;
+        // linux
+//        $path = storage_path().'/uploads/'.$this->_user_name;
+        // windows
+        $path = storage_path().'/'.$this->_user_name;
         $file_name = $path.'/'.date("YmdHis",time())."_".$this->_file_name;
 
         if(!is_dir($path)) {
             mkdir($path,0777);
         }
 
+        $this->_error_msg['file_name'] = $file_name;
         return move_uploaded_file($this->_file, $file_name);
+    }
+
+    public function get_res_info()
+    {
+        return $this->_error_msg;
     }
 
     public function format_res_info()
