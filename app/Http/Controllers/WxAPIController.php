@@ -46,30 +46,12 @@ class WxAPIController extends Controller
         // 输出图片前不能有输出,ob_clean()清空就可以显示图片了！！！！
 //        ob_clean();
 //        header('Content-type: image/jpg');
-        $dst_path = storage_path().'\huangtu_22.jpg';
-        $src_path = storage_path().'\lanaya.jpg_20180721162814.jpg';
-//创建图片的实例
-        $dst = imagecreatefromstring(file_get_contents($dst_path));
-        $black = imagecolorallocate($dst, 0,0, 0);
-        imagefttext($dst, 18, 0, 234, 475, $black, 'C:\Windows\Fonts\msyh.ttf', 'test');
-        list($dst_w, $dst_h, $dst_type) = getimagesize($dst_path);
-        echo $dst_w;
-//        switch ($dst_type) {
-//            case 1://GIF
-//                header('Content-Type: image/gif');
-//                imagegif($dst);
-//                break;
-//            case 2://JPG
-//                header('Content-Type: image/jpeg');
-//                imagejpeg($dst);
-//                break;
-//            case 3://PNG
-//                header('Content-Type: image/png');
-//                imagepng($dst);
-//                break;
-//            default:
-//                break;
-//        }
-        imagedestroy($dst);
+        $os_name=PHP_OS;
+        if(strpos($os_name,"Linux")!==false){
+            $os_str="Linux操作系统";
+        }else if(strpos($os_name,"WIN")!==false){
+            $os_str="Windows操作系统";
+        }
+        echo $os_name;
     }
 }

@@ -39,7 +39,8 @@ class ImageAddFont
     );
 
     private $_font_map = array(
-        'default' => 'C:\Windows\Fonts\msyh.ttf',
+//        'default' => 'C:\Windows\Fonts\msyh.ttf',
+        'default'=>'/usr/share/fonts/chinese/SIMHEI.TTF',
     );
 
     function __construct($path, $content)
